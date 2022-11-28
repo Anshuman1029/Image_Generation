@@ -1,0 +1,56 @@
+from tkinter import *
+from tkinter import messagebox
+import random
+import openai
+import webbrowser
+from tkinter import ttk
+
+colour = ["#f0b4b4","#558fed","#a7f05d","#f78be3","#f57d7d","#98eff5","#ecf772"]
+
+root=Tk()
+root.title("                                                                               Text to Image | Developed By Anshuman")
+root.geometry("800x480")
+root.resizable(False,False)
+root.iconbitmap("Icon/icon1.ico")
+root.configure(bg=(random.choice(colour)))
+
+var_serial=StringVar()
+var_image=StringVar()
+
+def g_i():
+          try:
+                    openai.api_key = "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"
+                    response=openai.Image.create(
+                    prompt=var_image.get(),
+                    n=int(var_serial.get()),
+                    size=combo_1.get())
+                    image_url = response['data'][0]['url']
+                    url = image_url
+                    webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C:/Program Files (x86)//Google//Chrome//Application//chrome.exe"))
+                    webbrowser.get('chrome').open(url)
+
+          
+          except:
+                    messagebox.showerror("TEXT TO IMAGE","Please enter something or please enter something else")                                         
+
+label_1 = Label(root,text="TEXT TO IMAGE",bg=random.choice(colour),fg="black",font=("BrandonGrotesque-Black",36)).place(x=220,y=35)
+
+label_2 = Label(root,text="Text =",bg=random.choice(colour),fg="black",font=("Century Gothic Bold",22)).place(x=185,y=155)
+
+label_3 = Label(root,text="Serial Image No.",bg=random.choice(colour),fg="black",font=("Century Gothic Bold",22)).place(x=230,y=234)
+
+label_4 = Label(root,text="Image Size",bg=random.choice(colour),fg="black",font=("Century Gothic Bold",22)).place(x=215,y=305)
+
+entry_1 = Entry(root,textvariable=var_image,bg=random.choice(colour),fg="black",font=("Century Gothic Bold",22),bd=2)
+entry_1.place(x=290,y=154,height=45)
+entry_1.focus()
+
+spin_1=Spinbox(root,from_= 1, to = 10,bg=random.choice(colour),fg="black",font=(("Century Gothic Bold",22)),activebackground=random.choice(colour),textvariable=var_serial).place(x=500,y=234,width=58)
+
+combo_1=ttk.Combobox(root,values=['256x256', '512x512', '1024x1024'],font=("Century Gothic Bold",22),state='r',width=10)
+combo_1.place(x=425,y=305)
+combo_1.set("1024x1024")
+
+generate_image = Button(root,command=g_i,text="Generate Image",bg=random.choice(colour),fg="black",font=("Century Gothic Bold",22),activebackground=random.choice(colour),relief=GROOVE,cursor="hand2").place(x=260,y=370)
+
+root.mainloop()
